@@ -49,9 +49,22 @@
       let div = document.createElement('div')
       div.innerHTML = this.render()
       document.getElementById('notes').appendChild(div)
+      div.addEventListener('click', this.divAction)
     }
 
+    divAction(e) {
+      if (e.target.id.includes('delete-note')) {
+        Adapter.deleteNote(e.target.value)
+        // console.log('delete note', e.target.value)
+        Adapter.getNotes()
 
+      } else if (e.target.parentElement.id.includes('delete-note')) {
+        Adapter.deleteNote(e.target.parentElement.value)
+        Adapter.getNotes()
+        
+        // console.log('trash can', e.target.parentElement.value);
+      }
+    }
 
 
 
@@ -62,7 +75,7 @@
       return (
         `<div class="panel panel-default">
           <div class="panel-heading" >${this.title}
-              <button id="delete-note-${this.id}" type="button" class="btn pull-right btn-default btn-xs" aria-label="Left Align">
+              <button id="delete-note-${this.id}" value="${this.id}" type="button" class="btn pull-right btn-default btn-xs" aria-label="Left Align">
                 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
               </button>
           </div>
