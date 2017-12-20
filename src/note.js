@@ -48,6 +48,7 @@
     makeCard() {
       let div = document.createElement('div')
       div.innerHTML = this.render()
+      div.value = `${this.id}`
       document.getElementById('notes').appendChild(div)
       div.addEventListener('click', this.divAction)
     }
@@ -57,13 +58,28 @@
         Adapter.deleteNote(e.target.value)
         // console.log('delete note', e.target.value)
         Adapter.getNotes()
-
       } else if (e.target.parentElement.id.includes('delete-note')) {
         Adapter.deleteNote(e.target.parentElement.value)
         Adapter.getNotes()
-        
-        // console.log('trash can', e.target.parentElement.value);
+      } else {
+        console.log('preview', this.value)
+        Note.updateForm(parseInt(this.value))
       }
+    }
+
+    static updateForm(id) {
+      let formTitle = document.getElementById('title')
+      let formBody = document.getElementById('content')
+      let note = Note.findNote(id)
+      console.log(note);
+      console.log("Title:", note.title);
+      console.log("Body:", note.body);
+      formTitle.value = note.title
+      formBody.value = note.body
+    }
+
+    static findNote(id) {
+      return Note.all().find(note => note.id === id)
     }
 
 
