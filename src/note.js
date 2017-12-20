@@ -23,36 +23,24 @@
       document.getElementById('notes').innerHTML = ''
       for (var i = json.length - 1; i >= 0; i--) {
         let note = json[i]
-        // function(note) {
-          let newNote = new Note(note)
-          newNote.makeCard()
-        // }
+        let newNote = new Note(note)
+        newNote.makeCard()
       }
-
-      // json.forEach(
-      //
-      // )
     }
 
     static attachListeners() {
       document.getElementById('note-form').addEventListener('submit', this.newNote)
+      // document.getElementById('')
     }
-
 
     static newNote(e) {
       e.preventDefault()
       let title = document.getElementById('title').value
       let body = document.getElementById('content').value
-      const data = {title, body}
-      console.log(data)
-      // if (title.length && content.length) {
-      //   const data = {
-      //     "title": title
-      //     "body": content
-      //   }
-        Adapter.createNewNote(data)
-        Adapter.getNotes()
-      // }
+      let user_id = parseInt(document.getElementById('user-dropdown').value)
+      const data = {title, body, user_id}
+      Adapter.createNewNote(data)
+      Adapter.getNotes()
     }
 
 
@@ -62,6 +50,8 @@
       div.innerHTML = this.render()
       document.getElementById('notes').appendChild(div)
     }
+
+
 
 
 

@@ -2,11 +2,18 @@ class Adapter {
   constructor() {
 
   }
+  static getUsers() {
+    fetch('http://localhost:3000/api/v1/users')
+    .then(resp => resp.json())
+    .then(json => User.createUser(json))
+  }
+
 
   static getNotes() {
-    fetch('http://localhost:3000/api/v1/notes')
+    fetch('http://localhost:3000/api/v1/users/1')
     .then(resp => resp.json())
-    .then(json => Note.createNote(json))
+    // .then(json => console.log(json.notes))
+    .then(json => Note.createNote(json.notes))
   }
 
   static createNewNote(json) {
@@ -17,6 +24,18 @@ class Adapter {
       },
       body: JSON.stringify(json)
     }).then(resp => resp.json())
+    .then(console.log)
     .then(data => Adapter.getNotes())
   }
+
+  static deleteNote(id) {
+    fetch(`http://localhost:3000/api/v1/notes/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then(Adapter.getNotes())
+  }
+
+
 }

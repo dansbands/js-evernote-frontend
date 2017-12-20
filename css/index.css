@@ -2,3 +2,16 @@
   height: 500px;
   overflow: scroll;
 }
+
+.navbar-default {
+  background-color: white;
+}
+
+.panel:hover {
+  /*background-color: green;*/
+  border: 3px solid rgba(45,190,96,0.3);
+}
+
+.panel:active {
+  border: 3px solid rgba(45,190,96,1);
+}
