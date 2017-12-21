@@ -38,8 +38,17 @@ class Adapter {
     }).then(Adapter.getNotes())
   }
 
-  static updateNote(id) {
-
+  static updateNote(json) {
+    // console.log(json)
+    fetch(`http://localhost:3000/api/v1/notes/${json.note_id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(json)
+    }).then(resp => resp.json())
+    .then(console.log)
+    .then(data => Adapter.getNotes())
   }
 
 

@@ -33,12 +33,27 @@
 
     static attachListeners() {
       document.getElementById('add-note').addEventListener('click', this.newNote)
-      document.getElementById('title').addEventListener('change', this.updateNote)
+      document.getElementById('title').addEventListener('change', this.updateCurrentNote)
+      document.getElementById('content').addEventListener('change', this.updateCurrentNote)
       // document.getElementById('')
     }
 
-    static updateNote(e) {
-      console.log(e.target.value)
+    static updateCurrentNote(e) {
+      let note_id = document.getElementById('note-id').value
+      if (e.target.id === 'title') {
+        let title = e.target.value
+        let data = {note_id, title}
+        // console.log(data)
+        Adapter.updateNote(data)
+      } else if (e.target.id === 'content') {
+        let body = e.target.value
+        let data = {note_id, body}
+        // console.log(data)
+        Adapter.updateNote(data)
+      }
+      // console.log(e.target.id)
+
+      // console.log(e.target.value)
     }
 
     static newNote(e) {
