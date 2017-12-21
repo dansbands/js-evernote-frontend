@@ -6,11 +6,6 @@
       this.id = json.id
       this.title = json.title
       this.body = json.body
-      // if (!json.user.id) {
-      //   this.userId = 'blank'
-      // } else {
-      //   this.userId = json.user.id
-      // }
       all.push(this)
     }
 
@@ -19,10 +14,22 @@
       return [...all]
     }
 
+    static attachListeners() {
+      document.getElementById('add-note').addEventListener('click', this.newNote)
+      document.getElementById('title').addEventListener('change', this.updateCurrentNote)
+      document.getElementById('content').addEventListener('keyup', this.updateCurrentNote)
+
+      document.getElementById('title').addEventListener('focus', this.animatePreviewOut)
+      document.getElementById('content').addEventListener('focus', this.animatePreviewOut)
+
+      document.getElementById('done').addEventListener('click', this.animatePreviewIn)
+
+      // document.getElementById('')
+    }
+
     static createNote(json) {
       document.getElementById('notes').innerHTML = ''
       let noteId = json[json.length - 1].id
-      console.log(noteId);
       this.updateFormValue(noteId)
       for (var i = json.length - 1; i >= 0; i--) {
         let note = json[i]
@@ -31,30 +38,80 @@
       }
     }
 
-    static attachListeners() {
-      document.getElementById('add-note').addEventListener('click', this.newNote)
-      document.getElementById('title').addEventListener('change', this.updateCurrentNote)
-      document.getElementById('content').addEventListener('change', this.updateCurrentNote)
-      // document.getElementById('')
-    }
-
     static updateCurrentNote(e) {
       let note_id = document.getElementById('note-id').value
       if (e.target.id === 'title') {
         let title = e.target.value
         let data = {note_id, title}
-        // console.log(data)
         Adapter.updateNote(data)
       } else if (e.target.id === 'content') {
         let body = e.target.value
         let data = {note_id, body}
-        // console.log(data)
         Adapter.updateNote(data)
       }
-      // console.log(e.target.id)
-
-      // console.log(e.target.value)
     }
+
+    static animatePreviewOut() {
+      let preview = document.getElementById('preview')
+      if ((!preview.style.marginLeft) || (parseInt(preview.style.marginLeft) >= 0)) {
+        let num = 0
+        preview.style.marginLeft = `${num}px`
+        let animate = setInterval(function(){
+          // while (num > -500) {
+            num -= 5
+          //   console.log(num);
+          // }
+
+          preview.style.marginLeft = `${num}px`
+          if (num < -500) {
+            clearInterval(animate)
+          }
+        }, 5)
+      }
+    }
+
+    static animatePreviewIn (e) {
+      e.preventDefault()
+      let preview = document.getElementById('preview')
+      if (parseInt(preview.style.marginLeft) < -500) {
+          console.log('hey!')
+          let num = -350
+          preview.style.marginLeft = `${num}px`
+          let animate = setInterval(function(){
+          // while (num > -500) {
+            num += 5
+          //   console.log(num);
+          // }
+
+          preview.style.marginLeft = `${num}px`
+          if (num >= 0) {
+            clearInterval(animate)
+          }
+        }, 5)
+      }
+    }
+
+    static animateNoteOut(e) {
+
+      let preview = document.getElementById(`${e}`)
+      console.log(preview)
+      if ((!preview.style.marginLeft) || (parseInt(preview.style.marginLeft) >= 0)) {
+        let num = 0
+        preview.style.marginLeft = `${num}px`
+        let animate = setInterval(function(){
+          // while (num > -500) {
+            num -= 5
+          //   console.log(num);
+          // }
+
+          preview.style.marginLeft = `${num}px`
+          if (num < -500) {
+            clearInterval(animate)
+          }
+        }, 5)
+      }
+    }
+
 
     static newNote(e) {
       e.preventDefault()
@@ -66,35 +123,9 @@
       Adapter.getNotes()
     }
 
-
-////////instance methods
-    makeCard() {
-      let div = document.createElement('div')
-      div.innerHTML = this.render()
-      div.value = `${this.id}`
-      document.getElementById('notes').appendChild(div)
-      div.addEventListener('click', this.divAction)
-    }
-
-    divAction(e) {
-      if (e.target.id.includes('delete-note')) {
-        Adapter.deleteNote(e.target.value)
-        // console.log('delete note', e.target.value)
-        Adapter.getNotes()
-      } else if (e.target.parentElement.id.includes('delete-note')) {
-        Adapter.deleteNote(e.target.parentElement.value)
-        Adapter.getNotes()
-      } else {
-        console.log('preview', this.value)
-        Note.updateForm(parseInt(this.value))
-      }
-    }
-
     static updateFormValue(id) {
       let formId = document.getElementById('note-id')
       formId.value = id
-
-      // console.log(this.id)
     }
 
     static updateForm(id) {
@@ -118,10 +149,34 @@
       return Note.all().find(note => note.id === id)
     }
 
+////////instance methods
+    makeCard() {
+      let div = document.createElement('div')
+      div.innerHTML = this.render()
+      div.value = `${this.id}`
+      div.id = `${this.id}`
+      document.getElementById('notes').appendChild(div)
+      div.addEventListener('click', this.divAction)
+    }
 
+    divAction(e) {
+      if (e.target.id.includes('delete-note')) {
+        Adapter.deleteNote(e.target.value)
+        Note.animateNoteOut(e.target.value)
 
+        // console.log('delete note', e.target.value)
+        Adapter.getNotes()
+      } else if (e.target.parentElement.id.includes('delete-note')) {
+        Adapter.deleteNote(e.target.parentElement.value)
 
+        Note.animateNoteOut(e.target.parentElement.value)
 
+        Adapter.getNotes()
+      } else {
+        console.log('preview', this.value)
+        Note.updateForm(parseInt(this.value))
+      }
+    }
 
     render () {
       return (

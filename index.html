@@ -33,7 +33,7 @@
 
     <div class="container">
 
-      <div class="col-sm-3">
+      <div class="col-sm-3" id="preview">
         <h3>Notes<span class="glyphicon glyphicon-plus-sign pull-right" id="add-note"></span></h3>
 
         <div id="notes"></div>
@@ -51,10 +51,10 @@
           <div class="form-group">
             <label for="content">Content:</label>
             <textarea name="content" rows="8" cols="80" class="form-control" id="content"></textarea>
-            <label for="content">Note ID - Hide This</label>
-            <input id="note-id" type="number">
+            <!-- <label for="content">Note ID - Hide This</label> -->
+            <input id="note-id" type="number" style= "display: none">
           </div>
-          <button type="submit" class="btn btn-default">Submit</button>
+          <button id="done" type="submit" class="btn btn-default">Done</button>
         </form>
 
       </div>
