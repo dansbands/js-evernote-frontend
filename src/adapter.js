@@ -24,8 +24,9 @@ class Adapter {
       },
       body: JSON.stringify(json)
     }).then(resp => resp.json())
-    .then(console.log)
     .then(data => Adapter.getNotes())
+    // .then(data => Note.updateFormValue())
+    // .then(console.log)
   }
 
   static deleteNote(id) {
@@ -35,6 +36,10 @@ class Adapter {
         'Content-Type': 'application/json',
       },
     }).then(Adapter.getNotes())
+  }
+
+  static updateNote(id) {
+
   }
 
 

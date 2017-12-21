@@ -21,6 +21,9 @@
 
     static createNote(json) {
       document.getElementById('notes').innerHTML = ''
+      let noteId = json[json.length - 1].id
+      console.log(noteId);
+      this.updateFormValue(noteId)
       for (var i = json.length - 1; i >= 0; i--) {
         let note = json[i]
         let newNote = new Note(note)
@@ -29,8 +32,13 @@
     }
 
     static attachListeners() {
-      document.getElementById('note-form').addEventListener('submit', this.newNote)
+      document.getElementById('add-note').addEventListener('click', this.newNote)
+      document.getElementById('title').addEventListener('change', this.updateNote)
       // document.getElementById('')
+    }
+
+    static updateNote(e) {
+      console.log(e.target.value)
     }
 
     static newNote(e) {
@@ -67,15 +75,28 @@
       }
     }
 
+    static updateFormValue(id) {
+      let formId = document.getElementById('note-id')
+      formId.value = id
+
+      // console.log(this.id)
+    }
+
     static updateForm(id) {
       let formTitle = document.getElementById('title')
       let formBody = document.getElementById('content')
+      let formId = document.getElementById('note-id')
       let note = Note.findNote(id)
       console.log(note);
       console.log("Title:", note.title);
       console.log("Body:", note.body);
-      formTitle.value = note.title
-      formBody.value = note.body
+      if (formTitle) {
+        formTitle.value = note.title
+      }
+      if (formBody) {
+        formBody.value = note.body
+      }
+      formId.value = note.id
     }
 
     static findNote(id) {

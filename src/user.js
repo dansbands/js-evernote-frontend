@@ -1,5 +1,7 @@
 const allUsers = []
 
+let currentUser = document.getElementById('user-dropdown')
+
 class User {
   constructor(json) {
     this.id = json.id

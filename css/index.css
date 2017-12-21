@@ -15,3 +15,12 @@
 .panel:active {
   border: 3px solid rgba(45,190,96,1);
 }
+
+#add-note {
+  color: rgba(45,190,96,1);
+}
+
+#add-note:hover {
+  color: green;
+
+}
